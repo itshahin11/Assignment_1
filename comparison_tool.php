@@ -53,18 +53,16 @@
             margin-right: 10px;
         }
 
-        input[type="submit"]:hover
-         {
+        input[type="submit"]:hover {
             background-color: blueviolet;
             transform: translateY(+10px);
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
         }
-        input[type="reset"]:hover
-        {
+        
+        input[type="reset"]:hover {
             background-color: orangered;
             transform: translateY(+10px);
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-
         }
 
         .result {
@@ -83,21 +81,38 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $number1 = $_POST["number1"];
-            $number2 = $_POST["number2"];
-            $largerNumber = ($number1 > $number2) ? $number1 : $number2;
-            echo "<h1>Comparison Tool</h1>";
-            echo "The larger number is: $largerNumber";
-        }
-        ?>
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $number1 = $_POST["number1"];
+        $number2 = $_POST["number2"];
 
+        if ($number1 > $number2) {
+            $largerNumber = $number1;
+            $equalityMessage = "The two numbers are not equal.";
+        } elseif ($number2 > $number1) {
+            $largerNumber = $number2;
+            $equalityMessage = "The two numbers are not equal.";
+        } else {
+            $largerNumber = $number1; // They are equal, so any number can be considered as the "larger" one.
+            $equalityMessage = "The two numbers are equal.";
+        }
+
+        echo "<h1>Comparison Tool</h1>";
+        echo "The larger number is: $largerNumber<br>";
+        echo $equalityMessage;
+    }
+    ?>
+
+    <div class="container">
         <h1>Comparison Tool</h1>
         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-            <input type="number" name="number1" placeholder="Enter number 1" required>
-            <input type="number" name="number2" placeholder="Enter number 2" required>
+            <label for="number1">Number 1:</label>
+            <input type="number" name="number1" placeholder="Enter number 1" required><br>
+            
+
+            <label for="number2">Number 2:</label>
+            <input type="number" name="number2" placeholder="Enter number 2" required><br>
+
             <input type="submit" value="Compare">
             <input type="reset" value="Reset Input">
         </form>
